@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://leandro.github.io', // Reemplazar con el nombre de usuario/org real
-  base: '/feria-ciencias-luz', // Reemplazar con el nombre del repositorio real
+  // Desactivamos la configuración de GitHub Pages para que funcione bien en Vercel
+  // site: 'https://leandro.github.io',
+  // base: '/feria-ciencias-luz',
 });
