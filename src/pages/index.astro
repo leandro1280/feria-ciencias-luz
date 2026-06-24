@@ -21,16 +21,16 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>La Luz - Feria de Ciencias</title>
+  <title>Feria de Ciencias - La Luz</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;700&family=Roboto+Mono:wght@400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Comic+Neue:wght@400;700&display=swap');
 
     :root {
-      --primary: #FF4D4D;
-      --secondary: #4D94FF;
-      --cta: #00E676;
-      --bg: #0a0a0c;
-      --text: #F5F5F7;
+      --primary: #FFD166; /* Amarillo */
+      --secondary: #118AB2; /* Azul */
+      --accent: #EF476F; /* Rojo rosa */
+      --bg-color: #F8F9FA;
+      --text-color: #073B4C;
     }
 
     body, html {
@@ -38,14 +38,19 @@ try {
       padding: 0;
       width: 100%;
       height: 100%;
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: 'Roboto Mono', monospace;
+      background-color: var(--bg-color);
+      /* Notebook paper background */
+      background-image: 
+        linear-gradient(#e1e5ea 1px, transparent 1px),
+        linear-gradient(90deg, #e1e5ea 1px, transparent 1px);
+      background-size: 40px 40px;
+      color: var(--text-color);
+      font-family: 'Comic Neue', cursive;
       overflow: hidden;
     }
 
-    h1, h2, h3 {
-      font-family: 'Exo', sans-serif;
+    h1, h2, h3, button {
+      font-family: 'Fredoka', sans-serif;
     }
 
     #slideshow-container {
@@ -55,75 +60,109 @@ try {
       display: flex;
       align-items: center;
       justify-content: center;
-      perspective: 1000px;
+      perspective: 1200px;
+      overflow: hidden;
+    }
+
+    .slide-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0) rotate(-10deg);
+      opacity: 0;
+      width: 80vw;
+      height: 80vh;
+      max-width: 900px;
+      /* Estilo Polaroid/Foto escolar */
+      background: white;
+      padding: 20px 20px 60px 20px;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     }
 
     .slide {
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
-      background-size: contain;
+      background-size: cover; 
       background-position: center;
       background-repeat: no-repeat;
-      opacity: 0;
-      transform: scale(1.1);
-      filter: blur(10px);
+      border-radius: 8px;
     }
 
-    .glass-overlay {
+    /* Tarjeta tipo "hoja de carpeta" */
+    .intro-card {
       position: absolute;
-      bottom: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 2.5rem 5rem;
-      border-radius: 24px;
-      text-align: center;
       z-index: 10;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      background: #fff;
+      padding: 40px;
+      border-radius: 5px;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+      max-width: 650px;
+      text-align: center;
+      transform: rotate(-2deg);
+      border-left: 2px solid #ef476f;
+      /* Lineas del cuaderno */
+      background-image: repeating-linear-gradient(transparent, transparent 31px, #00b4d8 31px, #00b4d8 32px);
+      line-height: 32px;
     }
 
-    .glass-overlay h1 {
+    /* Cinta adhesiva arriba */
+    .intro-card::before {
+      content: "";
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-3deg);
+      width: 120px;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      backdrop-filter: blur(2px);
+    }
+
+    .intro-card h1 {
       margin: 0;
-      font-size: 3.5rem;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      color: #fff;
-      text-shadow: 0 0 15px var(--secondary), 0 0 30px var(--cta);
+      font-size: 3rem;
+      color: var(--accent);
+      text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+      line-height: 1.2;
+      padding-bottom: 10px;
     }
     
-    .glass-overlay p {
+    .intro-card p {
+      font-size: 1.3rem;
+      color: var(--text-color);
       margin-top: 15px;
-      font-size: 1.4rem;
-      letter-spacing: 1px;
+      margin-bottom: 25px;
+    }
+
+    .intro-card strong {
+      color: var(--secondary);
     }
 
     #start-btn {
-      margin-top: 30px;
-      padding: 16px 40px;
-      font-size: 1.2rem;
-      font-family: 'Exo', sans-serif;
-      font-weight: bold;
-      background: linear-gradient(135deg, var(--secondary), var(--primary));
-      color: white;
-      border: none;
-      border-radius: 12px;
+      padding: 15px 35px;
+      font-size: 1.4rem;
+      font-weight: 600;
+      background-color: var(--primary);
+      color: #333;
+      border: 4px solid #333;
+      border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 4px 25px rgba(77, 148, 255, 0.5);
-      transition: all 0.3s ease;
+      box-shadow: 4px 4px 0px #333;
+      transition: all 0.2s ease;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
     }
 
     #start-btn:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 8px 30px rgba(255, 77, 77, 0.6);
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px #333;
+    }
+
+    #start-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0px #333;
     }
 
     .controls {
@@ -131,47 +170,35 @@ try {
       top: 20px;
       right: 20px;
       z-index: 20;
-      display: flex;
-      gap: 15px;
     }
     
     .icon-btn {
-      background: rgba(0,0,0,0.5);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: var(--accent);
+      border: 3px solid #333;
       color: white;
-      width: 50px;
-      height: 50px;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      backdrop-filter: blur(10px);
-      transition: background 0.3s, transform 0.2s;
+      box-shadow: 3px 3px 0px #333;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .icon-btn:hover {
-      background: rgba(255,255,255,0.3);
-      transform: scale(1.1);
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px #333;
     }
     
-    .hidden {
-      opacity: 0;
-      pointer-events: none;
-      transform: translate(-50%, 20px);
+    .icon-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0px #333;
     }
 
-    /* Refraction effect overlay */
-    .refraction-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(77,148,255,0.05) 0%, rgba(0,230,118,0.05) 50%, rgba(255,77,77,0.05) 100%);
-      mix-blend-mode: screen;
-      pointer-events: none;
-      z-index: 5;
+    .hidden {
+      display: none !important;
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" is:inline></script>
@@ -179,23 +206,27 @@ try {
 <body>
 
   <div id="slideshow-container">
-    {fotos.length === 0 && <p style="z-index: 100; position: absolute;">No se encontraron fotos en public/fotos/</p>}
-    {fotos.map((foto, index) => (
-      <div class="slide" style={`background-image: url('${foto}')`} data-index={index}></div>
-    ))}
+    {fotos.length === 0 && <p style="z-index: 100; position: absolute; background: white; padding: 20px;">No se encontraron fotos en public/fotos/</p>}
     
-    <div class="refraction-overlay"></div>
+    {fotos.map((foto, index) => (
+      <div class="slide-wrapper" data-index={index}>
+        <div class="slide" style={`background-image: url('${foto}')`}></div>
+      </div>
+    ))}
 
-    <div class="glass-overlay" id="intro-card">
-      <h1>La Luz</h1>
-      <p>Propagación, Reflexión y Refracción</p>
-      <p style="font-size: 1rem; color: #ccc; margin-top: 10px;">Escuela N° 35 Leandro N. Alem - 6° Año Div A</p>
-      <button id="start-btn">Iniciar Presentación</button>
+    <div class="intro-card" id="intro-card">
+      <h1>¡Descubriendo la Luz! 💡</h1>
+      <p>
+        ¡Hola! Somos los alumnos de <strong>6° Año de la Escuela N° 35 Leandro N. Alem</strong>. <br><br>
+        Para esta feria, construimos unas <strong>Cámaras Oscuras</strong> utilizando cartón corrugado negro para estudiar cómo viaja la luz y cómo se forman las sombras a través de los estenopos. <br><br>
+        ¡Te invitamos a ver fotos de nuestro experimento!
+      </p>
+      <button id="start-btn">¡Ver Fotos!</button>
     </div>
 
     <div class="controls">
       <button class="icon-btn" id="fullscreen-btn" title="Pantalla Completa">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
       </button>
     </div>
   </div>
@@ -205,7 +236,7 @@ try {
     const startBtn = document.getElementById('start-btn');
     const introCard = document.getElementById('intro-card');
     const fullscreenBtn = document.getElementById('fullscreen-btn');
-    const slides = document.querySelectorAll('.slide');
+    const slideWrappers = document.querySelectorAll('.slide-wrapper');
     
     let currentIndex = 0;
     let isPlaying = false;
@@ -217,35 +248,28 @@ try {
         if ('wakeLock' in navigator) {
           wakeLock = await navigator.wakeLock.request('screen');
           console.log('Screen Wake Lock actived');
-          
-          wakeLock.addEventListener('release', () => {
-            console.log('Screen Wake Lock released');
-          });
         }
       } catch (err) {
         console.error(`${err.name}, ${err.message}`);
       }
     }
 
-    // Handle visibility change for wake lock
     document.addEventListener('visibilitychange', async () => {
       if (wakeLock !== null && document.visibilityState === 'visible' && isPlaying) {
         await requestWakeLock();
       }
     });
 
-    // Fullscreen toggle
     fullscreenBtn.addEventListener('click', () => {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(err => {
-          console.log(`Error attempting to enable fullscreen: ${err.message}`);
+          console.log(`Error: ${err.message}`);
         });
       } else {
         document.exitFullscreen();
       }
     });
 
-    // Slideshow Logic
     function shuffleArray(array) {
       const arr = Array.from(array);
       for (let i = arr.length - 1; i > 0; i--) {
@@ -255,59 +279,73 @@ try {
       return arr;
     }
 
-    const shuffledSlides = shuffleArray(slides);
+    const shuffledWrappers = shuffleArray(slideWrappers);
 
     function nextSlide() {
-      const currentSlide = shuffledSlides[currentIndex];
-      
-      currentIndex = (currentIndex + 1) % shuffledSlides.length;
-      const nextSlideEl = shuffledSlides[currentIndex];
+      const currentWrapper = shuffledWrappers[currentIndex];
+      currentIndex = (currentIndex + 1) % shuffledWrappers.length;
+      const nextWrapper = shuffledWrappers[currentIndex];
 
-      // Animating out current slide
+      // Animación de salida divertida (cae y gira)
       anime({
-        targets: currentSlide,
+        targets: currentWrapper,
+        translateY: ['-50%', '150%'],
+        rotate: () => anime.random(-45, 45) + 'deg',
         opacity: [1, 0],
-        scale: [1, 1.05],
-        filter: ['blur(0px)', 'blur(20px)'],
-        duration: 3000,
-        easing: 'easeInOutSine'
+        duration: 1200,
+        easing: 'easeInBack'
       });
 
-      // Animating in next slide
+      // Animación de entrada divertida (rebote)
       anime({
-        targets: nextSlideEl,
+        targets: nextWrapper,
+        translateY: ['-150%', '-50%'],
+        translateX: ['-50%', '-50%'],
+        rotate: [() => anime.random(-30, 30) + 'deg', () => anime.random(-5, 5) + 'deg'],
+        scale: [0.5, 1],
         opacity: [0, 1],
-        scale: [1.05, 1],
-        filter: ['blur(20px)', 'blur(0px)'],
-        duration: 3000,
-        easing: 'easeInOutSine'
+        duration: 1800,
+        easing: 'easeOutElastic(1, .6)',
+        delay: 500
       });
     }
 
     startBtn.addEventListener('click', async () => {
-      if (slides.length === 0) {
+      if (slideWrappers.length === 0) {
         alert("No se encontraron fotos. Asegúrate de que estén en public/fotos/");
         return;
       }
       
-      introCard.classList.add('hidden');
+      // Animamos la tarjeta de inicio para que se vaya
+      anime({
+        targets: introCard,
+        translateY: '100vh',
+        rotate: '15deg',
+        duration: 800,
+        easing: 'easeInBack',
+        complete: () => {
+          introCard.classList.add('hidden');
+        }
+      });
+
       isPlaying = true;
-      
       await requestWakeLock();
       
       // Mostrar la primera diapo
-      const firstSlide = shuffledSlides[0];
+      const firstWrapper = shuffledWrappers[0];
       anime({
-        targets: firstSlide,
+        targets: firstWrapper,
+        translateY: ['-150%', '-50%'],
+        translateX: ['-50%', '-50%'],
+        rotate: [() => anime.random(-30, 30) + 'deg', () => anime.random(-5, 5) + 'deg'],
+        scale: [0.5, 1],
         opacity: [0, 1],
-        scale: [1.1, 1],
-        filter: ['blur(20px)', 'blur(0px)'],
-        duration: 2500,
-        easing: 'easeOutSine'
+        duration: 2000,
+        easing: 'easeOutElastic(1, .6)'
       });
 
-      // Pasar cada 6 segundos
-      slideInterval = setInterval(nextSlide, 6000);
+      // Pasar cada 5 segundos
+      slideInterval = setInterval(nextSlide, 5000);
     });
   </script>
 </body>
