@@ -62,7 +62,7 @@ try {
 
     #slideshow-section {
       width: 100%;
-      height: 60vh; /* 60% de la pantalla para fotos en móvil */
+      height: 100vh; /* 100% de la pantalla en móvil */
       position: relative;
       display: flex;
       align-items: center;
@@ -72,6 +72,7 @@ try {
     }
 
     #sidebar {
+      display: none; /* Oculto en móviles */
       width: 100%;
       box-sizing: border-box;
       background: rgba(255, 255, 255, 0.9);
@@ -296,6 +297,7 @@ try {
         height: 100%;
       }
       #sidebar {
+        display: flex; /* Mostrar en escritorio */
         width: 380px;
         border-top: none;
         border-left: 4px dashed var(--accent);
