@@ -53,15 +53,80 @@ try {
       font-family: 'Fredoka', sans-serif;
     }
 
-    #slideshow-container {
-      position: relative;
+    #layout {
+      display: flex;
       width: 100%;
       height: 100vh;
+    }
+
+    #slideshow-section {
+      flex: 1;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       perspective: 1200px;
       overflow: hidden;
+    }
+
+    #sidebar {
+      width: 380px;
+      background: rgba(255, 255, 255, 0.9);
+      border-left: 4px dashed var(--accent);
+      padding: 30px;
+      box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 30;
+      overflow-y: auto;
+    }
+
+    #sidebar h2 {
+      color: var(--secondary);
+      font-size: 2.2rem;
+      margin-top: 0;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .curiosities {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .curiosities li {
+      background: #fff;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 3px 3px 0px var(--secondary);
+      border: 2px solid #333;
+      font-size: 1.25rem;
+      line-height: 1.4;
+      position: relative;
+      transform: rotate(-1deg);
+      transition: transform 0.2s;
+    }
+
+    .curiosities li:nth-child(even) {
+      transform: rotate(1.5deg);
+      box-shadow: 3px 3px 0px var(--accent);
+    }
+
+    .curiosities li:hover {
+      transform: scale(1.05) rotate(0deg) !important;
+      z-index: 10;
+    }
+
+    .curiosities li.highlight {
+      background: var(--primary);
+      box-shadow: 4px 4px 0px var(--accent);
+      transform: rotate(-2deg);
+      font-size: 1.35rem;
     }
 
     .slide-wrapper {
@@ -70,10 +135,10 @@ try {
       left: 50%;
       transform: translate(-50%, -50%) scale(0) rotate(-10deg);
       opacity: 0;
-      width: 80vw;
-      height: 80vh;
-      max-width: 900px;
-      /* Estilo Polaroid/Foto escolar */
+      width: 80%;
+      height: 80%;
+      max-width: 800px;
+      max-height: 600px;
       background: white;
       padding: 20px 20px 60px 20px;
       border-radius: 12px;
@@ -89,7 +154,6 @@ try {
       border-radius: 8px;
     }
 
-    /* Tarjeta tipo "hoja de carpeta" */
     .intro-card {
       position: absolute;
       z-index: 10;
@@ -97,16 +161,14 @@ try {
       padding: 40px;
       border-radius: 5px;
       box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
-      max-width: 650px;
+      max-width: 600px;
       text-align: center;
       transform: rotate(-2deg);
       border-left: 2px solid #ef476f;
-      /* Lineas del cuaderno */
       background-image: repeating-linear-gradient(transparent, transparent 31px, #00b4d8 31px, #00b4d8 32px);
       line-height: 32px;
     }
 
-    /* Cinta adhesiva arriba */
     .intro-card::before {
       content: "";
       position: absolute;
@@ -122,7 +184,7 @@ try {
 
     .intro-card h1 {
       margin: 0;
-      font-size: 3rem;
+      font-size: 2.8rem;
       color: var(--accent);
       text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
       line-height: 1.2;
@@ -205,29 +267,43 @@ try {
 </head>
 <body>
 
-  <div id="slideshow-container">
-    {fotos.length === 0 && <p style="z-index: 100; position: absolute; background: white; padding: 20px;">No se encontraron fotos en public/fotos/</p>}
-    
-    {fotos.map((foto, index) => (
-      <div class="slide-wrapper" data-index={index}>
-        <div class="slide" style={`background-image: url('${foto}')`}></div>
-      </div>
-    ))}
+  <div id="layout">
+    <div id="slideshow-section">
+      {fotos.length === 0 && <p style="z-index: 100; position: absolute; background: white; padding: 20px;">No se encontraron fotos en public/fotos/</p>}
+      
+      {fotos.map((foto, index) => (
+        <div class="slide-wrapper" data-index={index}>
+          <div class="slide" style={`background-image: url('${foto}')`}></div>
+        </div>
+      ))}
 
-    <div class="intro-card" id="intro-card">
-      <h1>¡Descubriendo la Luz! 💡</h1>
-      <p>
-        ¡Hola! Somos los alumnos de <strong>6° Año de la Escuela N° 35 Leandro N. Alem</strong>. <br><br>
-        Para esta feria, construimos unas <strong>Cámaras Oscuras</strong> utilizando cartón corrugado negro para estudiar cómo viaja la luz y cómo se forman las sombras a través de los estenopos. <br><br>
-        ¡Te invitamos a ver fotos de nuestro experimento!
-      </p>
-      <button id="start-btn">¡Ver Fotos!</button>
+      <div class="intro-card" id="intro-card">
+        <h1>¡Descubriendo la Luz! 💡</h1>
+        <p>
+          ¡Hola! Somos los alumnos de <strong>6° Año de la Escuela N° 35 Leandro N. Alem</strong>. <br><br>
+          Para esta feria, construimos unas <strong>Cámaras Oscuras</strong> utilizando cartón corrugado negro para estudiar cómo viaja la luz y cómo se forman las sombras a través de los estenopos. <br><br>
+          ¡Te invitamos a ver fotos de nuestro experimento!
+        </p>
+        <button id="start-btn">¡Ver Fotos!</button>
+      </div>
+
+      <div class="controls">
+        <button class="icon-btn" id="fullscreen-btn" title="Pantalla Completa">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+        </button>
+      </div>
     </div>
 
-    <div class="controls">
-      <button class="icon-btn" id="fullscreen-btn" title="Pantalla Completa">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
-      </button>
+    <!-- SIDEBAR DE CURIOSIDADES -->
+    <div id="sidebar">
+      <h2>¿Sabías qué...? 💡</h2>
+      <ul class="curiosities">
+        <li class="highlight"><strong>¡Nosotros también hacemos experimentos como los científicos!</strong> 🔬 Observando, anotando y descubriendo cómo funciona el mundo en nuestro biombo.</li>
+        <li>¡La luz viaja súper rápido! A <strong>300.000 kilómetros por segundo</strong>. ¡Podría dar 7 vueltas y media a la Tierra en un solo segundo!</li>
+        <li>La luz blanca está formada por todos los colores del arcoíris. ¡Sir Isaac Newton lo descubrió usando un prisma de cristal!</li>
+        <li>La luz viaja en línea recta, ¡por eso se forman las <strong>sombras</strong> cuando un objeto bloquea su camino!</li>
+        <li>Podemos ver las cosas porque la luz rebota en ellas (se refleja) y llega a nuestros ojos.</li>
+      </ul>
     </div>
   </div>
 
@@ -315,6 +391,10 @@ try {
         alert("No se encontraron fotos. Asegúrate de que estén en public/fotos/");
         return;
       }
+
+      // IMPORTANTE: Evitar que hagan doble clic y rompan la animación superponiendo fotos
+      if (isPlaying) return;
+      isPlaying = true;
       
       // Animamos la tarjeta de inicio para que se vaya
       anime({
@@ -328,7 +408,6 @@ try {
         }
       });
 
-      isPlaying = true;
       await requestWakeLock();
       
       // Mostrar la primera diapo
