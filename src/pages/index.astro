@@ -37,7 +37,7 @@ try {
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 100%;
+      min-height: 100%;
       background-color: var(--bg-color);
       /* Notebook paper background */
       background-image: 
@@ -46,7 +46,7 @@ try {
       background-size: 40px 40px;
       color: var(--text-color);
       font-family: 'Comic Neue', cursive;
-      overflow: hidden;
+      overflow-x: hidden; /* Permitir scroll vertical en móviles */
     }
 
     h1, h2, h3, button {
@@ -55,12 +55,14 @@ try {
 
     #layout {
       display: flex;
+      flex-direction: column; /* Mobile first: columna */
       width: 100%;
-      height: 100vh;
+      min-height: 100vh;
     }
 
     #slideshow-section {
-      flex: 1;
+      width: 100%;
+      height: 60vh; /* 60% de la pantalla para fotos en móvil */
       position: relative;
       display: flex;
       align-items: center;
@@ -70,16 +72,16 @@ try {
     }
 
     #sidebar {
-      width: 380px;
+      width: 100%;
+      box-sizing: border-box;
       background: rgba(255, 255, 255, 0.9);
-      border-left: 4px dashed var(--accent);
-      padding: 30px;
-      box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+      border-top: 4px dashed var(--accent); /* Borde superior en móvil */
+      padding: 20px;
+      box-shadow: 0 -5px 25px rgba(0,0,0,0.1);
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       z-index: 30;
-      overflow-y: auto;
     }
 
     #sidebar h2 {
@@ -158,10 +160,10 @@ try {
       position: absolute;
       z-index: 10;
       background: #fff;
-      padding: 40px;
+      padding: 25px; /* Más pequeño en móvil */
       border-radius: 5px;
       box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
-      max-width: 600px;
+      max-width: 90%;
       text-align: center;
       transform: rotate(-2deg);
       border-left: 2px solid #ef476f;
@@ -184,7 +186,7 @@ try {
 
     .intro-card h1 {
       margin: 0;
-      font-size: 2.8rem;
+      font-size: 2rem; /* Más pequeño en móvil */
       color: var(--accent);
       text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
       line-height: 1.2;
@@ -192,7 +194,7 @@ try {
     }
     
     .intro-card p {
-      font-size: 1.3rem;
+      font-size: 1.1rem; /* Más pequeño en móvil */
       color: var(--text-color);
       margin-top: 15px;
       margin-bottom: 25px;
@@ -261,6 +263,39 @@ try {
 
     .hidden {
       display: none !important;
+    }
+
+    /* === DISEÑO DE ESCRITORIO (Tablets y PCs) === */
+    @media (min-width: 768px) {
+      body, html {
+        overflow: hidden; /* Sin scroll vertical en PC */
+      }
+      #layout {
+        flex-direction: row;
+        height: 100vh;
+      }
+      #slideshow-section {
+        flex: 1;
+        height: 100%;
+      }
+      #sidebar {
+        width: 380px;
+        border-top: none;
+        border-left: 4px dashed var(--accent);
+        padding: 30px;
+        box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+        overflow-y: auto;
+      }
+      .intro-card {
+        padding: 40px;
+        max-width: 600px;
+      }
+      .intro-card h1 {
+        font-size: 2.8rem;
+      }
+      .intro-card p {
+        font-size: 1.3rem;
+      }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" is:inline></script>
