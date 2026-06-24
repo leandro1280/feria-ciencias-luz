@@ -156,6 +156,21 @@ try {
       border-radius: 8px;
     }
 
+    .caption {
+      position: absolute;
+      bottom: 15px;
+      left: 10px;
+      right: 10px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--text-color);
+      background: rgba(255, 255, 255, 0.85);
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 2px dashed var(--accent);
+    }
+
     .intro-card {
       position: absolute;
       z-index: 10;
@@ -164,6 +179,8 @@ try {
       border-radius: 5px;
       box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
       max-width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
       text-align: center;
       transform: rotate(-2deg);
       border-left: 2px solid #ef476f;
@@ -306,11 +323,24 @@ try {
     <div id="slideshow-section">
       {fotos.length === 0 && <p style="z-index: 100; position: absolute; background: white; padding: 20px;">No se encontraron fotos en public/fotos/</p>}
       
-      {fotos.map((foto, index) => (
-        <div class="slide-wrapper" data-index={index}>
-          <div class="slide" style={`background-image: url('${foto}')`}></div>
-        </div>
-      ))}
+      {fotos.map((foto, index) => {
+        const descripciones = [
+          "¡Nuestra cámara oscura en acción!",
+          "Observando cómo viaja la luz 💡",
+          "La luz viaja en línea recta 📏",
+          "Descubriendo las sombras 🌘",
+          "¡Experimentos súper divertidos! 👩‍🔬",
+          "Ciencia en 6° Año 🏫",
+          "Atrapando la luz en nuestra caja 📦",
+          "¡Mira cómo se invierte la imagen! 🙃"
+        ];
+        return (
+          <div class="slide-wrapper" data-index={index}>
+            <div class="slide" style={`background-image: url('${foto}')`}></div>
+            <div class="caption">{descripciones[index % descripciones.length]}</div>
+          </div>
+        );
+      })}
 
       <div class="intro-card" id="intro-card">
         <h1>¡Descubriendo la Luz! 💡</h1>
@@ -397,20 +427,27 @@ try {
       currentIndex = (currentIndex + 1) % shuffledWrappers.length;
       const nextWrapper = shuffledWrappers[currentIndex];
 
-      // Animación de salida divertida (cae y gira)
+      // Animación de salida
+      currentWrapper.style.zIndex = 1;
       anime({
         targets: currentWrapper,
-        translateY: ['-50%', '150%'],
+        translateY: ['-50%', '150vh'],
+        translateX: ['-50%', '-50%'],
         rotate: () => anime.random(-45, 45) + 'deg',
         opacity: [1, 0],
         duration: 1200,
-        easing: 'easeInBack'
+        easing: 'easeInBack',
+        complete: () => {
+          currentWrapper.style.visibility = 'hidden';
+        }
       });
 
-      // Animación de entrada divertida (rebote)
+      // Animación de entrada
+      nextWrapper.style.visibility = 'visible';
+      nextWrapper.style.zIndex = 10;
       anime({
         targets: nextWrapper,
-        translateY: ['-150%', '-50%'],
+        translateY: ['-150vh', '-50%'],
         translateX: ['-50%', '-50%'],
         rotate: [() => anime.random(-30, 30) + 'deg', () => anime.random(-5, 5) + 'deg'],
         scale: [0.5, 1],
@@ -447,9 +484,11 @@ try {
       
       // Mostrar la primera diapo
       const firstWrapper = shuffledWrappers[0];
+      firstWrapper.style.visibility = 'visible';
+      firstWrapper.style.zIndex = 10;
       anime({
         targets: firstWrapper,
-        translateY: ['-150%', '-50%'],
+        translateY: ['-150vh', '-50%'],
         translateX: ['-50%', '-50%'],
         rotate: [() => anime.random(-30, 30) + 'deg', () => anime.random(-5, 5) + 'deg'],
         scale: [0.5, 1],
